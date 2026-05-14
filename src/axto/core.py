@@ -31,8 +31,12 @@ class Engine:
         try:
             Terminal.clear_screen()
             
-            while self.running:
-                # Draw all widgets
+            # Focus the first widget if it exists
+            if self.widgets:
+                self.widgets[self.focus_index].select() 
+            
+            while self.running:    
+                # Draw all widgets 
                 self._render_all_widgets()
                 
                 # 2. Handle input (reading 1 byte)
@@ -59,3 +63,6 @@ class Engine:
             self.running = False
         elif key == '\t':  # Tab key to switch focus
             self.focus_index = (self.focus_index + 1) % len(self.widgets)
+            index_before = (self.focus_index - 1) % len(self.widgets)
+            self.widgets[index_before].deselect()  # Deselect previous widget
+            self.widgets[self.focus_index].select()  # Select new widget

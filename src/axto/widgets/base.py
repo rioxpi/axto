@@ -5,6 +5,7 @@ class Widget:
         self.width = width
         self.height = height
         self.handlers = {} 
+        self.selected = False
 
     def draw(self, term):
         raise NotImplementedError("Base Widget does not implement draw method")
@@ -17,4 +18,11 @@ class Widget:
     def bind(self, event_type, callback):
         """Bind an event handler to a specific event type"""
         self.handlers[event_type] = callback
-        
+    
+    def select(self):
+        """Called when the widget is selected/focused"""
+        self.selected = True
+
+    def deselect(self):
+        """Called when the widget is deselected/unfocused"""
+        self.selected = False
