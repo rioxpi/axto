@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "axto"
+version = "0.0.1"
+description = "Simple TUI library."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "Rioxpi" }
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
