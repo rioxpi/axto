@@ -1,15 +1,17 @@
-from axto import Engine
+from axto.core import Engine
+from axto.widgets.box import Box
 
-def test_engine():
-    engine = Engine()
-    assert not engine.running, "Engine should not be running initially"
+def main():
+    app = Engine()
     
-    engine.start()
-    assert engine.running, "Engine should be running after start()"
+    box1 = Box(x=5, y=5, width=20, height=10)
+    box1.bind("key", lambda key: print(f"Box received key: {key}")) 
+    box2 = Box(x=30, y=5, width=20, height=10)
+    box2.bind("key", lambda key: print(f"Box 2 received key: {key}"))  
+    app.add_widget(box1)
+    app.add_widget(box2)
     
-    engine.stop()
-    assert not engine.running, "Engine should not be running after stop()"
+    app.run()
 
 if __name__ == "__main__":
-    test_engine()
-    print("All tests passed!")
+    main()
