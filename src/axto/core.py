@@ -24,7 +24,7 @@ class Engine:
         if self._old_settings:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, self._old_settings)
 
-    def run(self):
+    def run(self): # TODO: Hide cursor
         self.running = True
         self._enable_raw_mode()
         
