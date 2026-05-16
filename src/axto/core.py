@@ -2,6 +2,8 @@ import sys
 import tty
 import termios
 from .terminal import Terminal
+from .parser import read_key
+from .keys import Key
 
 class Engine:
     def __init__(self):
@@ -41,7 +43,7 @@ class Engine:
                 
                 # 2. Handle input (reading 1 byte)
                 # This blocks the loop until a key is pressed
-                key = sys.stdin.read(1)
+                key = read_key()
                 self._handle_input(key)
                 
                 if self.widgets:
@@ -59,9 +61,9 @@ class Engine:
     
     def _handle_input(self, key):
         """Handle user input"""
-        if key == 'q':
+        if key == 'q':# or key == Key.ESC:  # Quit on 'q' or Escape key
             self.running = False
-        elif key == '\t':  # Tab key to switch focus
+        elif key == Key.TAB:  # Tab key to switch focus
             self.focus_index = (self.focus_index + 1) % len(self.widgets)
             index_before = (self.focus_index - 1) % len(self.widgets)
             self.widgets[index_before].deselect()  # Deselect previous widget
