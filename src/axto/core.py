@@ -61,7 +61,7 @@ class Engine:
     
     def _handle_input(self, key):
         """Handle user input"""
-        if key == 'q':# or key == Key.ESC:  # Quit on 'q' or Escape key
+        if key == 'q' or key == Key.ESC:  # Quit on 'q' or Escape key
             self.running = False
         elif key == Key.TAB:  # Tab key to switch focus
             self.focus_index = (self.focus_index + 1) % len(self.widgets)
