@@ -15,6 +15,11 @@ class Widget:
         if "key" in self.handlers:
             self.handlers["key"](key)
     
+    def trigger(self, event_name, *args, **kwargs):
+        """Trigger an event handler if it exists"""
+        if event_name in self.handlers:
+            self.handlers[event_name](*args, **kwargs)
+    
     def bind(self, event_type, callback):
         """Bind an event handler to a specific event type"""
         self.handlers[event_type] = callback
@@ -22,7 +27,9 @@ class Widget:
     def select(self):
         """Called when the widget is selected/focused"""
         self.selected = True
+        self.trigger("select")
 
     def deselect(self):
         """Called when the widget is deselected/unfocused"""
         self.selected = False
+        self.trigger("deselect")

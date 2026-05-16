@@ -1,15 +1,19 @@
 from axto import Engine
-from axto.widgets.box import Box
+from axto.widgets.button import Button
+
+def button_pressed():
+    print("\033[15;1HBUTTON PRESSED!\033[0m")  # Move cursor to line 15 and print message
 
 def test_engine():
     engine = Engine()
-    box1 = Box(5, 5, 20, 10, default_color="37", selected_color="32", border_style="single")
-    box2 = Box(30, 5, 20, 10, default_color="37", selected_color="32", border_style="double")
     
-    box2.bind("key", lambda key: print(f"Box 2 received key: {key}"))
+    btn = Button(10, 5, "Click Me")
+    btn.bind("press", button_pressed)
+    engine.add_widget(btn)
     
-    engine.add_widget(box1)
-    engine.add_widget(box2)
+    btn2 = Button(10, 7, "Exit")
+    btn2.bind("press", lambda: print("\033[15;1HEXITING...\033[0m"))  # Bind exit button to stop the engine
+    engine.add_widget(btn2)
     
     # Run the engine (this will block until you exit)
     engine.run()
