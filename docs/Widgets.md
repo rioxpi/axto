@@ -6,7 +6,7 @@
 	1. x <- number of columns
 	2. y <- number of rows
 	3. width <- width in columns
-	4. high <- high in rows
+	4. height <- high in rows
 	5. default_color <- drawing color
 	6. selected_color <- color when focused
 	7. border_style <- style of box's border ("single", "double", "none" )
