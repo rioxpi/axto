@@ -6,6 +6,9 @@ from .parser import read_key
 from .keys import Key
 
 class Engine:
+    """
+    Core engine that runs the application, manages the main loop, and handles input and rendering
+    """
     def __init__(self):
         self.running = False
         self.widgets = []
@@ -13,20 +16,32 @@ class Engine:
         self.focus_index = 0  # Index of the currently focused widget
         
     def add_widget(self, widget):
+        """Add a widget to the engine's list of widgets
+
+        Args:
+            widget (Widget): The widget to add
+        """
         self.widgets.append(widget)
 
     def _enable_raw_mode(self):
-        """Change terminal to raw mode to read input byte by byte."""
+        """
+        Change terminal to raw mode to read input byte by byte
+        """
         fd = sys.stdin.fileno()
         self._old_settings = termios.tcgetattr(fd)
         tty.setraw(fd)
 
     def _disable_raw_mode(self):
-        """Restore standard terminal settings."""
+        """
+        Restore standard terminal settings
+        """
         if self._old_settings:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, self._old_settings)
 
     def run(self): # TODO: Hide cursor
+        """
+        Run the application
+        """
         self.running = True
         self._enable_raw_mode()
         
@@ -55,12 +70,16 @@ class Engine:
             Terminal.clear_screen()
     
     def _render_all_widgets(self):
-        """Helper method to render all widgets."""
+        """
+        Helper method to render all widgets
+        """
         for widget in self.widgets:
             widget.draw(Terminal)
     
     def _handle_input(self, key):
-        """Handle user input"""
+        """
+        Handle user input
+        """
         if key == '\x03' or key == Key.ESC or key == "\x11":  # Quit on Ctrl+C, Escape key or Ctrl+Q
             self.running = False
         elif key == Key.TAB:  # Tab key to switch focus

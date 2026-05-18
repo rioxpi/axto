@@ -1,4 +1,7 @@
 class Key:
+    """
+    class for special keys
+    """
     UP = "KEY_UP"
     DOWN = "KEY_DOWN"
     LEFT = "KEY_LEFT"

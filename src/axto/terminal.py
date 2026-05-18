@@ -1,6 +1,9 @@
 import sys
 
 class Terminal:
+    """
+    Class for terminal control
+    """
     # ANSI escape codes for terminal control
     CLEAR = "\033[2J"
     HOME = "\033[H"
@@ -8,16 +11,33 @@ class Terminal:
 
     @staticmethod
     def move_cursor(x, y):
+        """
+        Move the cursor to a specific position
+
+        Args:
+            x (int): The column position
+            y (int): The row position
+        """
         # ANSI uses format: \033[y;xH (first row, then column)
         sys.stdout.write(f"\033[{y};{x}H")
 
     @staticmethod
     def clear_screen():
+        """
+        Clear the terminal screen
+        """
         sys.stdout.write(Terminal.CLEAR + Terminal.HOME)
         sys.stdout.flush()
 
     @staticmethod
     def write(text, color_code=None):
+        """
+        Write text to the terminal
+
+        Args:
+            text (str): The text to write
+            color_code (int, str, optional): The ANSI color code. Defaults to None.
+        """
         if color_code:
             sys.stdout.write(f"\033[{color_code}m{text}{Terminal.RESET}")
         else:

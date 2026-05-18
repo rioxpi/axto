@@ -2,17 +2,30 @@ from axto.widgets.base import Widget
 from axto.keys import Key
 
 class Button(Widget):
+    """A button widget.
+
+    Args:
+        Widget (Widget): The base widget class
+    """
     def __init__(self, x, y, text):
         super().__init__(x, y, len(text) + 4, 1)  # Width based on text length + padding
         self.text = text
     
     def on_key(self, key):
-        """If is focused and Enter is pressed, trigger the button action."""
+        """Handle key press events.
+
+        Args:
+            key (str, Key): The key that was pressed
+        """
         if key == Key.ENTER:
             self.trigger("press")
     
     def draw(self, term):
-        """Drawing the button depends on whether it's selected or not."""
+        """Render the button widget.
+
+        Args:
+            term (Terminal): The terminal instance used for rendering
+        """
         if self.selected:
             bracket_left = "<"
             bracket_right = ">"

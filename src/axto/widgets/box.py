@@ -1,6 +1,11 @@
 from axto.widgets.base import Widget
 
 class Box(Widget):
+    """A box widget.
+
+    Args:
+        Widget (Widget): The base widget class
+    """
     def __init__(self, x, y, width, height, default_color="37", selected_color="32", border_style="single"):
         super().__init__(x, y, width, height)
         self.default_color = default_color
