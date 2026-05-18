@@ -1,30 +1,43 @@
-from axto import Engine
+from axto.core import Engine
+from axto.widgets.box import Box
 from axto.widgets.button import Button
 from axto.widgets.input import Input
+from axto.scene_manager import SceneManager
+from axto.scene import Scene
 
-def button_pressed():
-    print("\033[15;1HBUTTON PRESSED!\033[0m")  # Move cursor to line 15 and print message
+def main():
+    app = Engine()
+    manager = SceneManager(app)
 
-def input_submitted(text):
-    print(f"\033[15;1HINPUT SUBMITTED: {text}\033[0m")  # Move cursor to line 15 and print submitted text
+    # Main menu scene
+    menu_scene = Scene()
+    menu_scene.add_widget(Box(2, 2, 30, 8))
+    
+    btn_start = menu_scene.add_widget(Button(5, 4, "START GAME"))
+    btn_settings = menu_scene.add_widget(Button(5, 6, "SETTINGS"))
 
-def test_engine():
-    engine = Engine()
+    # Actions for buttons
+    btn_settings.bind("press", lambda: manager.switch_scene("settings"))
+
+    # Settings scene
+    settings_scene = Scene()
+    settings_scene.add_widget(Box(2, 2, 45, 8))
     
-    btn = Button(10, 5, "Click Me")
-    btn.bind("press", button_pressed)
-    engine.add_widget(btn)
+    # Input for player nickname
+    settings_scene.add_widget(Input(5, 4, 20, placeholder="Enter nickname..."))
     
-    input_widget = Input(10, 9, 20, "Enter text...")
-    input_widget.bind("submit", input_submitted)
-    engine.add_widget(input_widget)
+    btn_back = settings_scene.add_widget(Button(5, 6, "BACK TO MENU"))
     
-    btn2 = Button(10, 7, "Exit")
-    btn2.bind("press", lambda: print("\033[15;1HEXITING...\033[0m"))  # Bind exit button to stop the engine
-    engine.add_widget(btn2)
-    
-    # Run the engine (this will block until you exit)
-    engine.run()
+    # Action: Return to main menu
+    btn_back.bind("press", lambda: manager.switch_scene("menu"))
+
+
+    manager.add_scene("menu", menu_scene)
+    manager.add_scene("settings", settings_scene)
+
+    # Start with the main menu
+    manager.switch_scene("menu")
+    app.run()
 
 if __name__ == "__main__":
-    test_engine()
+    main()
