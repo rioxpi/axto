@@ -1,12 +1,14 @@
 # AXTO
 
-1. Simple TUI library
+Simple TUI (Text User Interface) library for Python.
 
-## INSTALATION
-1. `pip install axto`
+## INSTALLATION
+```
+pip install axto
+```
 
 ## QUICK START
-```
+```python
 from axto import Engine
 from axto.widgets.box import Box
 
@@ -16,9 +18,14 @@ app.add_widget(box1)
 app.run()
 ```
 
-## AVAIABLE WIDGETS
+## AVAILABLE WIDGETS
 1. BOX
+2. INPUT
+3. BUTTON
 
-## Control
-1. `q` - exit engine
-2. `TAB` - select next widget
+## CONTROLS
+* `CTRL+C`, `CTRL+Q`, `ESC` – exit engine
+* `TAB` – select next widget
+
+## DOCUMENTATION
+You can find the full documentation in the `docs/` directory.
