@@ -7,8 +7,7 @@ from axto.widgets.input import Input
 def main():
     app = Engine()
 
-    label = Label(2, 2, "Hello, World!", color="34", align="center", width=20)
-    
+    label = Input(2, 2, 20, placeholder="Type something...")
     app.add_widget(label)
     
     app.run()
