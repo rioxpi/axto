@@ -7,8 +7,8 @@ class Button(Widget):
     Args:
         Widget (Widget): The base widget class
     """
-    def __init__(self, x, y, text):
-        super().__init__(x, y, len(text) + 4, 1)  # Width based on text length + padding
+    def __init__(self, x, y, text, selectable=True):
+        super().__init__(x, y, len(text) + 4, 1, selectable=selectable)
         self.text = text
     
     def on_key(self, key):

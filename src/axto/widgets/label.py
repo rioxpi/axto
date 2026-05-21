@@ -2,7 +2,7 @@ from axto.widgets.base import Widget
 
 class Label(Widget):
     def __init__(self, x, y, text, color="73"):
-        super().__init__(x,y, width=len(text), height=1)
+        super().__init__(x,y, width=len(text), height=1, selectable=False)
         self.text = text
         self.color = color
     

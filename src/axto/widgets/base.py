@@ -2,13 +2,14 @@ class Widget:
     """
     Base class for all widgets
     """
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, selectable=True):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.handlers = {} 
         self.selected = False
+        self.is_selectable = selectable
 
     def draw(self, term):
         """Render the widget

@@ -2,8 +2,8 @@ from axto.widgets.base import Widget
 from axto.keys import Key
 
 class Input(Widget):
-    def __init__(self, x, y, width, placeholder=''):
-        super().__init__(x, y, width, height=1)
+    def __init__(self, x, y, width, placeholder='', selectable=True):
+        super().__init__(x, y, width, height=1, selectable=selectable)
         self.placeholder = placeholder
         self.text = ''
     

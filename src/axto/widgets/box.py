@@ -6,8 +6,8 @@ class Box(Widget):
     Args:
         Widget (Widget): The base widget class
     """
-    def __init__(self, x, y, width, height, default_color="37", selected_color="32", border_style="single"):
-        super().__init__(x, y, width, height)
+    def __init__(self, x, y, width, height, default_color="37", selected_color="32", border_style="single", selectable=True):
+        super().__init__(x, y, width, height, selectable=selectable)
         self.default_color = default_color
         self.selected_color = selected_color
         self.border_style = border_style

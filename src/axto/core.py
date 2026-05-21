@@ -76,6 +76,24 @@ class Engine:
         for widget in self.widgets:
             widget.draw(Terminal)
     
+    def _next_widget(self):
+        """
+        Move focus to the next widget
+        """
+        if not self.widgets: return
+        
+        self.widgets[self.focus_index].deselect()  # Deselect current widget
+        
+        old_index = self.focus_index
+        while True:
+            self.focus_index = (self.focus_index + 1) % len(self.widgets)
+            if self.widgets[self.focus_index].is_selectable:
+                break
+            if self.focus_index == old_index:  # All widgets are non-selectable
+                return
+        
+        self.widgets[self.focus_index].select()  # Select new widget
+
     def _handle_input(self, key):
         """
         Handle user input
@@ -83,7 +101,4 @@ class Engine:
         if key == '\x03' or key == Key.ESC or key == "\x11":  # Quit on Ctrl+C, Escape key or Ctrl+Q
             self.running = False
         elif key == Key.TAB:  # Tab key to switch focus
-            self.focus_index = (self.focus_index + 1) % len(self.widgets)
-            index_before = (self.focus_index - 1) % len(self.widgets)
-            self.widgets[index_before].deselect()  # Deselect previous widget
-            self.widgets[self.focus_index].select()  # Select new widget
+            self._next_widget()
