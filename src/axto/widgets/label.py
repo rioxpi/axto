@@ -31,7 +31,7 @@ class Label(Widget):
         term.move_cursor(self.x, self.y)
         term.write(display_text, self.color)
 
-    def set_text(self, text, resize=False):
+    def set_text(self, text, resize=True):
         """Update the label's text.
         
         Args:

@@ -13,7 +13,7 @@ class Box(Widget):
     }
 
     def __init__(self, x, y, width, height, default_color="37", selected_color="32", 
-                 border_style="single", bg_color=None, has_shadow=False, selectable=True):
+                 border_style="single", bg_color=None, selectable=True):
         super().__init__(x, y, width, height, selectable=selectable)
         self.default_color = default_color
         self.selected_color = selected_color
