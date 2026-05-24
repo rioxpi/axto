@@ -58,3 +58,11 @@ class Terminal:
             return colums, rows
         except OSError:
             return 80, 24  # Default size if unable to get terminal size
+
+    @staticmethod
+    def hide_cursor():
+        sys.stdout.write("\033[?25l")
+    
+    @staticmethod
+    def show_cursor():
+        sys.stdout.write("\033[?25l")

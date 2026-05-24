@@ -34,6 +34,7 @@ class Engine:
         fd = sys.stdin.fileno()
         self._old_settings = termios.tcgetattr(fd)
         tty.setraw(fd)
+        Terminal.hide_cursor()
 
     def _disable_raw_mode(self):
         """
@@ -41,6 +42,8 @@ class Engine:
         """
         if self._old_settings:
             termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, self._old_settings)
+        
+        Terminal.show_cursor()
 
     def run(self): # TODO: Hide cursor
         """
