@@ -1,4 +1,5 @@
 import sys
+import os
 
 class Terminal:
     """
@@ -26,7 +27,7 @@ class Terminal:
         """
         Clear the terminal screen
         """
-        sys.stdout.write(Terminal.CLEAR + Terminal.HOME)
+        sys.stdout.write("\033[2J\033[3J\033[H")
         sys.stdout.flush()
 
     @staticmethod
@@ -43,3 +44,17 @@ class Terminal:
         else:
             sys.stdout.write(text)
         sys.stdout.flush()
+    
+    @staticmethod
+    def get_size():
+        """
+        Get the terminal size
+
+        Returns:
+            tuple: (width, height) of the terminal
+        """
+        try:
+            colums, rows = os.get_terminal_size()
+            return colums, rows
+        except OSError:
+            return 80, 24  # Default size if unable to get terminal size

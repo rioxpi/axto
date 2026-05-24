@@ -1,6 +1,8 @@
 import sys
 import tty
 import termios
+import signal
+import time
 from .terminal import Terminal
 from .parser import read_key
 from .keys import Key
@@ -14,6 +16,8 @@ class Engine:
         self.widgets = []
         self._old_settings = None
         self.focus_index = 0  # Index of the currently focused widget
+        if hasattr(signal, 'SIGWINCH'):
+            signal.signal(signal.SIGWINCH, self._handle_sigwinch)
         
     def add_widget(self, widget):
         """Add a widget to the engine's list of widgets
@@ -52,9 +56,12 @@ class Engine:
             if self.widgets:
                 self.widgets[self.focus_index].select() 
             
+            self._handle_resize()  # Initial render based on current terminal size
+            
             while self.running:    
                 # Draw all widgets 
                 self._render_all_widgets()
+                #self._handle_resize()
                 
                 # 2. Handle input (reading 1 byte)
                 # This blocks the loop until a key is pressed
@@ -102,3 +109,19 @@ class Engine:
             self.running = False
         elif key == Key.TAB:  # Tab key to switch focus
             self._next_widget()
+    
+    def _handle_sigwinch(self, signum, frame):
+        self._handle_resize()
+    
+    def _handle_resize(self):
+        """
+        Handle terminal resize events
+        """
+        width, height = Terminal.get_size()
+        Terminal.clear_screen()
+        
+        time.sleep(0.01)
+        
+        for widget in self.widgets:
+            widget.resolve_geometry(width, height)
+        self._render_all_widgets()
