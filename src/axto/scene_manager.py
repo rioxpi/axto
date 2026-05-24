@@ -40,3 +40,4 @@ class SceneManager:
             self.engine.widgets[0].select()  # Select the first widget in the new scene
         
         Terminal.clear_screen()
+        Engine._render_all_widgets(self.engine)
