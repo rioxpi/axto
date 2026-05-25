@@ -1,9 +1,11 @@
 # Scenes
+
 1. You can switch between different UI panels, it is optional
 
 ## SCENE
+
 1. `from axto.scene import Scene`
-2. Parameters 
+2. Parameters
 	1. None
 3. Functions
 	1. `add_widget(widget)`
@@ -11,6 +13,7 @@
 		2. Example: `button_scene = scene.add_widget(Button(5,6, "START"))`
 
 ## SCENE MANAGER
+
 1. `from axto.scene_manager import SceneManager`
 2. Parameters
 	1. `engine` <- instance of main Engine
