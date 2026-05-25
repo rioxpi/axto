@@ -8,6 +8,7 @@ if sys.platform == 'win32':
 
     def read_key():
         # msvcrt.getch() getts a single byte from the console without echoing it
+        
         ch = msvcrt.getch()
         
         # Windows uses a two-byte sequence for arrow keys: first 0x00 or 0xe0, then the actual key code

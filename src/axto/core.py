@@ -6,6 +6,8 @@ import time
 from .terminal import Terminal
 from .parser import read_key
 from .keys import Key
+import queue
+import select
 
 class Engine:
     """
@@ -16,6 +18,9 @@ class Engine:
         self.widgets = []
         self._old_settings = None
         self.focus_index = 0  # Index of the currently focused widget
+        
+        self.main_thread_queue = queue.Queue()
+        
         if hasattr(signal, 'SIGWINCH'):
             signal.signal(signal.SIGWINCH, self._handle_sigwinch)
         
@@ -26,6 +31,8 @@ class Engine:
             widget (Widget): The widget to add
         """
         self.widgets.append(widget)
+        data = Terminal.get_size()
+        widget.resolve_geometry(data[0], data[1])
 
     def _enable_raw_mode(self):
         """
@@ -62,6 +69,7 @@ class Engine:
             self._handle_resize()  # Initial render based on current terminal size
             
             while self.running:    
+                self._process_main_thread_queue()
                 # Draw all widgets 
                 self._render_all_widgets()
                 #self._handle_resize()
@@ -128,3 +136,25 @@ class Engine:
         for widget in self.widgets:
             widget.resolve_geometry(width, height)
         self._render_all_widgets()
+    
+    def dispatch_to_main_thread(self, func, *args, **kwargs):
+        """
+        Safe execute function from thread
+        
+        Args:
+            func (function): Function to execute
+        """
+        self.main_thread_queue.put((func, args, kwargs))
+    
+    def _process_main_thread_queue(self):
+        """
+        Processing functions from main_thread_queue
+        """ 
+        
+        while not self.main_thread_queue.empty():
+            try:
+                func, args, kwargs = self.main_thread_queue.get_nowait()
+                func(*args, **kwargs)
+                self.main_thread_queue.task_done()
+            except queue.Empty:
+                break

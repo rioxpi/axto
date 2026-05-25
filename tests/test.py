@@ -10,12 +10,17 @@ def main():
     app.add_widget(main_box)
     
     header_label = Label(0.5, 2, 'WELCOME TO AXTO')
-    app.add_widget(header_label)
+    #app.add_widget(header_label)
+    
         
     #scroll_list = ScrollList(2, 2, 30, 3, items=["Item 1", "Item 2", "Item 3", "Item 4", "Item 5"])
     #app.add_widget(scroll_list)
 
+    app.dispatch_to_main_thread(app.add_widget, header_label)
+    
+    
     app.run()
+    
 
 if __name__ == "__main__":
     main()
