@@ -1,4 +1,5 @@
 from axto.widgets.base import Widget
+from axto.terminal import Terminal
 
 class Scene:
     """
@@ -14,6 +15,8 @@ class Scene:
             widget (Widget): The widget to add
         """
         self.widgets.append(widget)
+        parent_w, parent_h = Terminal.get_size()
+        widget.resolve_geometry(parent_w, parent_h)
         return widget
 
     
