@@ -17,7 +17,7 @@ class Engine:
         self.running = False
         self.widgets = []
         self._old_settings = None
-        self.focus_index = -1  # Index of the currently focused widget
+        self.focus_index = -1 # Index of the currently focused widget
         
         self.main_thread_queue = queue.Queue()
         
@@ -52,7 +52,7 @@ class Engine:
         
         Terminal.show_cursor()
 
-    def run(self): # TODO: Hide cursor
+    def run(self):
         """
         Run the application
         """
@@ -64,7 +64,7 @@ class Engine:
             
             # Focus the first widget if it exists
             if self.widgets:
-                self._next_widget()
+                self._next_widget() 
             
             self._handle_resize()  # Initial render based on current terminal size
             
