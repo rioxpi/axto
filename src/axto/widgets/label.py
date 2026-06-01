@@ -1,7 +1,8 @@
 from axto.widgets.base import Widget
+from axto.styles import Color
 
 class Label(Widget):
-    def __init__(self, x, y, text, color="73", align="left", width=None):
+    def __init__(self, x, y, text, color:str=Color.WHITE, align="left", width=None):
         self.initial_text = text
         chosen_width = width if width is not None else len(text)
         

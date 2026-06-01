@@ -46,10 +46,12 @@ class Input(Widget):
             term.write(error_box, "1;37;41")
             return
 
+        text_color = self.theme.default_text
+
         # Dynamic content and styling based on selection state
         if self.selected:
-            bracket_color = "1;92"
-            text_color = "0;37"
+            bracket_color = self.theme.widget_selected
+            
             
             # Calculate viewport for text based on cursor position
             cursor_pos = len(self.text)
@@ -59,8 +61,7 @@ class Input(Widget):
             left_bracket = "«" if start_idx > 0 else "<"
             right_bracket = "»" if len(self.text) > start_idx + content_width else ">"
         else:
-            bracket_color = "2;37" 
-            text_color = "2;37"
+            bracket_color = self.theme.widget_deselected
             
             visible_text = self.text[:content_width] if self.text else self.placeholder
             left_bracket = "["

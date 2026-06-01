@@ -15,6 +15,8 @@ class Widget:
         self.handlers = {} 
         self.selected = False
         self.is_selectable = selectable
+        
+        self.engine = None
 
     def resolve_geometry(self, parent_w: int, parent_h: int):
         # X
@@ -109,3 +111,11 @@ class Widget:
         """
         self.selected = False
         self.trigger("deselect")
+    
+    @property
+    def theme(self):
+        if hasattr(self, "engine") and self.engine:
+            return self.engine.theme
+
+        from axto.styles import Theme
+        return Theme()

@@ -6,6 +6,7 @@ import time
 from .terminal import Terminal
 from .parser import read_key
 from .keys import Key
+from .styles import Theme
 import queue
 
 class Engine:
@@ -17,6 +18,7 @@ class Engine:
         self.widgets = []
         self._old_settings = None
         self.focus_index = -1 # Index of the currently focused widget
+        self.theme = Theme()
         
         self.main_thread_queue = queue.Queue()
         
@@ -29,6 +31,7 @@ class Engine:
         Args:
             widget (Widget): The widget to add
         """
+        widget.engine = self
         self.widgets.append(widget)
         data = Terminal.get_size()
         widget.resolve_geometry(data[0], data[1])

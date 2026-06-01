@@ -32,6 +32,9 @@ class SceneManager:
         if self.engine.widgets and self.engine.focus_index < len(self.engine.widgets):
             self.engine.widgets[self.engine.focus_index].deselect()
         
+        for w in self.scenes[name].widgets:
+            w.engine = self.engine
+        
         self.engine.widgets = self.scenes[name].widgets
         self.engine.focus_index = 0  # Reset focus to the first widget
         self.current_scene = name

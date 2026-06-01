@@ -29,11 +29,11 @@ class Button(Widget):
         if self.selected:
             bracket_left = "<"
             bracket_right = ">"
-            color = "1;32"  # Green for selected
+            color = self.theme.widget_selected
         else:
             bracket_left = "["
             bracket_right = "]"
-            color = "2;37"  # Dim white for unselected
+            color = self.theme.widget_deselected
         
         term.move_cursor(self.x, self.y)
         term.write(f"{bracket_left}{self.text}{bracket_right}", color)

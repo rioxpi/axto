@@ -28,7 +28,7 @@ class ProgressBar(Widget):
         
         display_text = f"[{bar}]{precent_string}"
         
-        color = 32 if self.progress >= 1.0 else "36"
+        color = self.theme.progress_fill if self.progress >= 1.0 else self.theme.progress_complete
         
         term.move_cursor(self.x, self.y)
         term.write(display_text, color)

@@ -30,10 +30,10 @@ class ScrollList(Widget):
             current_y = self.y + i
             
             if actual_index == self.scroll_offset + i and self.selected_index == actual_index:
-                color = '1;32'
+                color = self.theme.list_item_selected
                 prefix = '> '
             else:
-                color = '37'
+                color = self.theme.list_item_normal
                 prefix = ' '
             
             term.move_cursor(self.x, current_y)
