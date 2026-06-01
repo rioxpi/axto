@@ -7,7 +7,6 @@ from .terminal import Terminal
 from .parser import read_key
 from .keys import Key
 import queue
-import select
 
 class Engine:
     """
@@ -69,13 +68,13 @@ class Engine:
             self._handle_resize()  # Initial render based on current terminal size
             
             while self.running:    
+                                
                 self._process_main_thread_queue()
                 # Draw all widgets 
                 self._render_all_widgets()
                 #self._handle_resize()
                 
-                # 2. Handle input (reading 1 byte)
-                # This blocks the loop until a key is pressed
+                # Handle input
                 key = read_key()
                 self._handle_input(key)
                 
@@ -98,16 +97,25 @@ class Engine:
         """
         Move focus to the next widget
         """
-        if not self.widgets: return
+        if not self.widgets: 
+            return
         
-        self.widgets[self.focus_index].deselect()  # Deselect current widget
+        # Checking for selectable widget
+        if not any(w.is_selectable for w in self.widgets):
+            if self.focus_index != -1:
+                self.widgets[self.focus_index].deselect()
+            self.focus_index = -1
+            return
+        
+        if self.focus_index != -1: 
+            self.widgets[self.focus_index].deselect()  # Deselect current widget
         
         old_index = self.focus_index
         while True:
             self.focus_index = (self.focus_index + 1) % len(self.widgets)
             if self.widgets[self.focus_index].is_selectable:
                 break
-            if self.focus_index == old_index:  # All widgets are non-selectable
+            if self.focus_index == old_index:  
                 return
         
         self.widgets[self.focus_index].select()  # Select new widget
