@@ -59,3 +59,12 @@
 1. `from axto.widgets.scroll_list import ScrollList`
 2. parameters
 	1. items <- items to show in list	(list)
+
+## ProgressBar
+
+1. `from axto.widgets.progress_bar import ProgressBar`
+2. parameters
+	1. placeholder <- text in progress bar
+3. Functions
+	1. `set_progress(value)`
+		1. value <- new progress (0.0-1.0)	(float)

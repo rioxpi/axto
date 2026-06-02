@@ -22,6 +22,8 @@ app.run()
 ## Docs
 
 1. Engine functions
-    1. `add_widget(widget)` <- Adds widget 
+    1. `add_widget(widget)` <- Adds widget  (see more in Widgets.md)
     2. `run()` <- runs engine
     3. `dispatch_main_thread(func, args, kwargs)` <- Executes safe function from thread
+2. Engine parameters
+    1. `theme` <- can set widget themes     (see more in Themes.md)

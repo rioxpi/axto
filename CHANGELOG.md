@@ -27,3 +27,10 @@
 3. Add scalable layout
 4. Add hiding cursor
 5. Add safe thread management
+
+## Version 0.1.3
+
+1. Add progress bar widget
+2. Add themes
+3. Fix bug with selecting first item
+4. Fix bug with resolve geometry in scenes
