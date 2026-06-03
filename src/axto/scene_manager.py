@@ -1,12 +1,12 @@
 from axto.scene import Scene
-from axto.core import Engine
+#from axto.core import Engine
 from axto.terminal import Terminal
 
 class SceneManager:
     """
     Manages multiple scenes.
     """
-    def __init__(self, engine: Engine) -> None:
+    def __init__(self, engine) -> None:
         self.engine = engine
         self.scenes = {}
         self.current_scene = None
@@ -43,4 +43,4 @@ class SceneManager:
             self.engine.widgets[0].select()  # Select the first widget in the new scene
         
         Terminal.clear_screen()
-        Engine._render_all_widgets(self.engine)
+        self.engine._render_all_widgets()

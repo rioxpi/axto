@@ -13,6 +13,9 @@ from axto.styles import Color
 def main():
     app = Engine()
 
+
+    app.set_min_size(80, 24)
+    
     lb = Label(10,10,"HELLO")
     
     bx = Box(0,0,1.0,1.0)

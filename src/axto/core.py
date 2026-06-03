@@ -7,6 +7,7 @@ from .terminal import Terminal
 from .parser import read_key
 from .keys import Key
 from .styles import Theme
+from .default_scenes import DefaultScenes
 import queue
 
 class Engine:
@@ -20,10 +21,18 @@ class Engine:
         self.focus_index = -1 # Index of the currently focused widget
         self.theme = Theme()
         
+        self.min_size = (0,0)
+        
+        self.default_scenes = DefaultScenes(self)
+        
         self.main_thread_queue = queue.Queue()
+        
+        self._widget_data = []
+        self._is_terminal_too_small = False 
         
         if hasattr(signal, 'SIGWINCH'):
             signal.signal(signal.SIGWINCH, self._handle_sigwinch)
+        
         
     def add_widget(self, widget):
         """Add a widget to the engine's list of widgets
@@ -33,6 +42,7 @@ class Engine:
         """
         widget.engine = self
         self.widgets.append(widget)
+        self._widget_data.append(widget)
         data = Terminal.get_size()
         widget.resolve_geometry(data[0], data[1])
 
@@ -139,9 +149,19 @@ class Engine:
         """
         Handle terminal resize events
         """
+        if not self._is_terminal_too_small: self._widget_data = self.widgets
+        
         width, height = Terminal.get_size()
         Terminal.clear_screen()
         
+        if self.min_size != (0,0) and (width < self.min_size[0] or height < self.min_size[1]):
+            self.default_scenes.construct_terminal_too_small(self.min_size)
+            self.default_scenes.change_scene("terminal_too_small")
+            self._is_terminal_too_small = True
+        else:
+            self.widgets = self._widget_data
+            self._is_terminal_too_small = False
+            
         time.sleep(0.01)
         
         for widget in self.widgets:
@@ -169,3 +189,13 @@ class Engine:
                 self.main_thread_queue.task_done()
             except queue.Empty:
                 break
+    
+    def set_min_size(self, width, height):
+        """
+        Set minimum terminal size and show warning if current size is smaller
+        
+        Args:
+            width (int): Minimum width
+            height (int): Minimum height
+        """
+        self.min_size = (width, height)

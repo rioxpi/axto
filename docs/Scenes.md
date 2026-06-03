@@ -21,6 +21,6 @@
 	1.  `add_scene(name, scene)`
 		1. Registers a scene in the manager under a unique name 
 		2. Example: `manager.add_scene("menu", manu_scene)`
-	2. `switch_scene`
+	2. `switch_scene(name)`
 		1. Hides the current scene (triggering deselect) and activates the new one 
 		2. Example: `manager.switch_scene("menu")`
