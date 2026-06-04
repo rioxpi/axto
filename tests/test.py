@@ -3,10 +3,7 @@ WARNING: This file is only used to testing features.
 """
 
 from axto.core import Engine
-from axto.widgets.progress_bar import ProgressBar
-from axto.widgets.label import Label
-from axto.widgets.box import Box
-from axto.widgets.input import Input
+from axto.widgets import *
 import sys
 from axto.styles import Color
 
@@ -14,7 +11,7 @@ def main():
     app = Engine()
 
 
-    app.set_min_size(80, 24)
+    app.min_size = (80, 24)
     
     lb = Label(10,10,"HELLO")
     

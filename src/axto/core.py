@@ -189,13 +189,3 @@ class Engine:
                 self.main_thread_queue.task_done()
             except queue.Empty:
                 break
-    
-    def set_min_size(self, width, height):
-        """
-        Set minimum terminal size and show warning if current size is smaller
-        
-        Args:
-            width (int): Minimum width
-            height (int): Minimum height
-        """
-        self.min_size = (width, height)
