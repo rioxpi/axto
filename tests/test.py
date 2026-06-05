@@ -13,7 +13,7 @@ def main():
 
     app.min_size = (80, 24)
     
-    lb = Label(10,10,"HELLO")
+    lb = Label(10,10,"HELLO\nHELLO2")
     
     bx = Box(0,0,1.0,1.0)
     

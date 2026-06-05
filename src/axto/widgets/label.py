@@ -2,14 +2,20 @@ from axto.widgets.base import Widget
 from axto.styles import Color
 
 class Label(Widget):
-    def __init__(self, x, y, text, color:str=Color.WHITE, align="left", width=None):
+    def __init__(self, x, y,text,height:int=None, color:str=Color.WHITE, align="left", width=None):
         self.initial_text = text
-        chosen_width = width if width is not None else len(text)
-        
-        super().__init__(x, y, width=chosen_width, height=1, selectable=False)
+
+        lines = text.split("\n")
+        max_line_length = max(len(line) for line in lines) if lines else 0
+
+        chosen_width = width if width is not None else max_line_length
+        chosen_height = height if height is not None else len(lines)
+
+        super().__init__(x, y, width=chosen_width, height=chosen_height, selectable=False)
+
         self.text = text
         self.color = color
-        self.align = align  # Options: "left", "right", "center"
+        self.align = align  # "left", "right", "center"
 
     def draw(self, term):
         """Render the label widget.
@@ -17,20 +23,25 @@ class Label(Widget):
         Args:
             term (Terminal): Terminal instance used for rendering
         """
-        display_text = self.text[:self.width]
-        
-        # Formatting text based on alignment
-        if len(display_text) < self.width:
-            if self.align == "right":
-                display_text = display_text.rjust(self.width)
-            elif self.align == "center":
-                display_text = display_text.center(self.width)
-            else:
-                display_text = display_text.ljust(self.width)
+        lines = self.text.split("\n")
 
-        # Drawing the text
-        term.move_cursor(self.x, self.y)
-        term.write(display_text, self.color)
+        for i in range(self.height):
+            if i < len(lines):
+                line = lines[i][:self.width]
+            else:
+                line = ""
+
+            # Alignment
+            if len(line) < self.width:
+                if self.align == "right":
+                    line = line.rjust(self.width)
+                elif self.align == "center":
+                    line = line.center(self.width)
+                else:
+                    line = line.ljust(self.width)
+
+            term.move_cursor(self.x, self.y + i)
+            term.write(line, self.color)
 
     def set_text(self, text, resize=True):
         """Update the label's text.
@@ -41,5 +52,8 @@ class Label(Widget):
                            If False, text will be clipped/padded to current width.
         """
         self.text = text
+
         if resize:
-            self.width = len(text)
+            lines = text.split("\n")
+            self.width = max(len(line) for line in lines) if lines else 0
+            self.height = len(lines)
