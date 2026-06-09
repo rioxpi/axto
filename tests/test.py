@@ -9,30 +9,13 @@ from axto.styles import Color
 
 def main():
     app = Engine()
-
-
-    app.min_size = (80, 24)
-    
-    lb = Label(10,10,"HELLO\nHELLO2")
-    
-    bx = Box(0,0,1.0,1.0)
-    
-    inpt = Input(10,20,50)
     
     app.theme.border_focus = Color.RED
     
-    inpt.bind("submit", lambda val: sys.exit())
+    check_box_widget = CheckBox(10,10,"TEST")
     
-    
-    app.add_widget(bx)
+    app.add_widget(check_box_widget)
 
-    app.add_widget(inpt)
-
-    
-    pg = ProgressBar(5,5,50)
-    app.add_widget(lb)
-    pg.set_progress(0.5)
-    app.add_widget(pg)
     
     app.run()
     
