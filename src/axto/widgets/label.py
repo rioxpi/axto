@@ -2,7 +2,7 @@ from axto.widgets.base import Widget
 from axto.styles import Color
 
 class Label(Widget):
-    def __init__(self, x, y,text,height:int=None, color:str=Color.WHITE, align="left", width=None):
+    def __init__(self, x:int|float, y:int|float, text:str, height:int=None, color:str=Color.WHITE, align:str="left", width:int|float=None):
         self.initial_text = text
 
         lines = text.split("\n")
@@ -17,7 +17,7 @@ class Label(Widget):
         self.color = color
         self.align = align  # "left", "right", "center"
 
-    def draw(self, term):
+    def draw(self, term) -> None:
         """Render the label widget.
 
         Args:
@@ -43,7 +43,7 @@ class Label(Widget):
             term.move_cursor(self.x, self.y + i)
             term.write(line, self.color)
 
-    def set_text(self, text, resize=True):
+    def set_text(self, text: str, resize: bool=True) -> None:
         """Update the label's text.
         
         Args:

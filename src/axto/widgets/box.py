@@ -12,7 +12,7 @@ class Box(Widget):
         "none":      (" ", " ", " ", " ", " ", " ")
     }
 
-    def __init__(self, x, y, width, height,
+    def __init__(self, x:int|float, y:int|float, width:int|float, height:int|float,
                  border_style="single", selectable=True):
         super().__init__(x, y, width, height, selectable=selectable)
         
@@ -20,11 +20,10 @@ class Box(Widget):
             raise ValueError(f"Unsupported border style. Use {list(self.BORDER_DESIGNS.keys())}")
         self.border_style = border_style
         
-    def draw(self, term):
+    def draw(self, term) -> None:
         color = self.theme.border_focus if self.selected else self.theme.border_normal
         tl, tr, bl, br, h, v = self.BORDER_DESIGNS[self.border_style]
         
-        #draw_color = f"{color};{self.bg_color}" if self.bg_color else color
         inner_space = " " * (self.width - 2)
 
         term.move_cursor(self.x, self.y)

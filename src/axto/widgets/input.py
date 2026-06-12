@@ -3,7 +3,7 @@ from axto.keys import Key
 import time
 
 class Input(Widget):
-    def __init__(self, x, y, width, placeholder='', selectable=True):
+    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str='', selectable:bool=True):
         super().__init__(x, y, width, height=1, selectable=selectable)
         self.placeholder = placeholder
         self.text = ''

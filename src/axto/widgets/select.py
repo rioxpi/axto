@@ -2,14 +2,14 @@ from axto.widgets.base import Widget
 from axto.keys import Key
 
 class Select(Widget):
-    def __init__(self, x, y, width, options: list, default_index=0, label=""):
+    def __init__(self, x:int|float, y:int|float, width:int|float, options: list, default_index:int=0, label:str=""):
         super().__init__(x, y, width=width, height=1, selectable=True)
         
         self.options = options
         self.selected_index = default_index
         self.label = label
 
-    def on_key(self, key):
+    def on_key(self, key: Key) -> None:
         if key == Key.LEFT:
             if self.selected_index > 0:
                 self.selected_index -= 1
@@ -20,7 +20,7 @@ class Select(Widget):
                 self.selected_index += 1
                 self.trigger("change", self.options[self.selected_index], self.selected_index)
 
-    def draw(self, term):
+    def draw(self, term) -> None:
         color = self.theme.widget_selected if self.selected else self.theme.widget_deselected
         current_value = self.options[self.selected_index]
         display_label = f"{self.label}: " if self.label else ""

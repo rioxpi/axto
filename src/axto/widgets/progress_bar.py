@@ -1,8 +1,8 @@
 from axto.widgets.base import Widget
 
 class ProgressBar(Widget):
-    def __init__(self, x,y,width, placeholder=""):
-        super().__init__(x,y,width,1,selectable=False)
+    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str=""):
+        super().__init__(x, y, width, 1, selectable=False)
         
         self.progress = 0.0
         self.placeholder = placeholder
@@ -10,7 +10,7 @@ class ProgressBar(Widget):
     def set_progress(self, value: float) -> None:
         self.progress = max(0.0, min(value, 1.0))
     
-    def draw(self, term):
+    def draw(self, term) -> None:
         precent_string = f" {int(self.progress * 100)}%"
         
         bar_width = self.width - 2 - len(precent_string)

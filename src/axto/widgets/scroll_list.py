@@ -2,14 +2,18 @@ from axto.widgets.base import Widget
 from axto.keys import Key
 
 class ScrollList(Widget):
-    def __init__(self, x, y, width, height, items=None):
+    """
+    A scrollable list widget
+    """
+    def __init__(self, x:int|float, y:int|float, width:int|float, height:int|float, items:list=None):
         super().__init__(x, y, width, height)
         self.items = items or []
         self.selected_index = 0
         self.scroll_offset = 0
     
-    def on_key(self, key: Key):
-        if not self.items: return
+    def on_key(self, key: Key) -> None:
+        if not self.items: 
+            return
         
         if key == Key.UP:
             if self.selected_index > 0:
@@ -22,7 +26,7 @@ class ScrollList(Widget):
                 if self.selected_index >= self.scroll_offset + self.height:
                     self.scroll_offset += 1
     
-    def draw(self, term):
+    def draw(self, term) -> None:
         visible_items = self.items[self.scroll_offset : self.scroll_offset + self.height]
         
         for i, item in enumerate(visible_items):

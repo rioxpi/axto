@@ -143,13 +143,17 @@ class Engine:
             self._next_widget()
     
     def _handle_sigwinch(self, signum, frame):
+        """
+        Handle terminal resize signal (SIGWINCH)
+        """
         self._handle_resize()
     
     def _handle_resize(self):
         """
         Handle terminal resize events
         """
-        if not self._is_terminal_too_small: self._widget_data = self.widgets
+        if not self._is_terminal_too_small:
+            self._widget_data = self.widgets
         
         width, height = Terminal.get_size()
         Terminal.clear_screen()

@@ -1,8 +1,11 @@
+from axto.keys import Key
+from axto.styles import Theme
+
 class Widget:
     """
     Base class for all widgets
     """
-    def __init__(self, x, y, width, height, selectable=True):
+    def __init__(self, x:int|float, y:int|float, width:int|float, height:int|float, selectable : bool = True):
         self._raw_x = x
         self._raw_y = y
         self._raw_w = width
@@ -18,7 +21,7 @@ class Widget:
         
         self.engine = None
 
-    def resolve_geometry(self, parent_w: int, parent_h: int):
+    def resolve_geometry(self, parent_w: int, parent_h: int) -> None:
         # X
         if isinstance(self._raw_x, float):
             real_x = int(self._raw_x * parent_w) + 1
@@ -60,7 +63,7 @@ class Widget:
         self.width = max(1, min(real_w, max_allowed_w))
         self.height = max(1, min(real_h, max_allowed_h))
     
-    def draw(self, term):
+    def draw(self, term) -> None:
         """Render the widget
 
         Args:
@@ -71,7 +74,7 @@ class Widget:
         """
         raise NotImplementedError("Base Widget does not implement draw method")
 
-    def on_key(self, key):
+    def on_key(self, key: Key) -> None:
         """Handle key press events
 
         Args:
@@ -80,7 +83,7 @@ class Widget:
         if "key" in self.handlers:
             self.handlers["key"](key)
     
-    def trigger(self, event_name, *args, **kwargs):
+    def trigger(self, event_name: str, *args, **kwargs) -> None:
         """Trigger an event handler if it exists
 
         Args:
@@ -89,7 +92,7 @@ class Widget:
         if event_name in self.handlers:
             self.handlers[event_name](*args, **kwargs)
     
-    def bind(self, event_type, callback):
+    def bind(self, event_type: str, callback) -> None:
         """Bind an event handler to a specific event type
 
         Args:
@@ -98,14 +101,14 @@ class Widget:
         """
         self.handlers[event_type] = callback
     
-    def select(self):
+    def select(self) -> None:
         """
         Called when the widget is selected/focused
         """
         self.selected = True
         self.trigger("select")
 
-    def deselect(self):
+    def deselect(self) -> None:
         """
         Called when the widget is deselected/unfocused
         """
@@ -113,7 +116,7 @@ class Widget:
         self.trigger("deselect")
     
     @property
-    def theme(self):
+    def theme(self) -> "Theme":
         if hasattr(self, "engine") and self.engine:
             return self.engine.theme
 

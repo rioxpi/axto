@@ -7,11 +7,11 @@ class Button(Widget):
     Args:
         Widget (Widget): The base widget class
     """
-    def __init__(self, x, y, text, selectable=True):
+    def __init__(self, x:int|float, y:int|float, text:str, selectable:bool=True):
         super().__init__(x, y, len(text) + 4, 1, selectable=selectable)
         self.text = text
     
-    def on_key(self, key):
+    def on_key(self, key: Key) -> None:
         """Handle key press events.
 
         Args:
@@ -20,7 +20,7 @@ class Button(Widget):
         if key == Key.ENTER:
             self.trigger("press")
     
-    def draw(self, term):
+    def draw(self, term) -> None:
         """Render the button widget.
 
         Args:
