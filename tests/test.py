@@ -8,15 +8,13 @@ from axto.styles import Color
 
 def main():
     app = Engine()
-    
-    app.theme.border_focus = Color.RED
-    
-    check_box_widget = Select(10,10,20,["TEST1", "TEST2", "TEST4"])
-    
-    check_box_widget.bind("change", lambda val, ind: print(f"SELECTED {val}"))
-    
-    app.add_widget(check_box_widget)
 
+    ctn = Container(10, 10, 100, 100, title="OPTIONS")
+    
+    cb1 = ctn.add_child(Button(0,0,"HELLO"))
+    cb2 = ctn.add_child(CheckBox(5,5,"LIKE ME?"))
+    
+    app.add_widget(ctn)
     
     app.run()
     

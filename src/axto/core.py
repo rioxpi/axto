@@ -75,8 +75,7 @@ class Engine:
             Terminal.clear_screen()
             
             # Focus the first widget if it exists
-            if self.widgets:
-                self._next_widget() 
+            self._next_widget() 
             
             self._handle_resize()  # Initial render based on current terminal size
             
@@ -85,14 +84,13 @@ class Engine:
                 self._process_main_thread_queue()
                 # Draw all widgets 
                 self._render_all_widgets()
-                #self._handle_resize()
                 
                 # Handle input
                 key = read_key()
                 self._handle_input(key)
                 
                 if self.widgets:
-                    active_widget = self.widgets[self.focus_index]
+                    active_widget = self.all_active_widgets[self.focus_index]
                     active_widget.on_key(key)
         finally:
             # Restore terminal settings and clear screen on exit
@@ -103,35 +101,38 @@ class Engine:
         """
         Helper method to render all widgets
         """
-        for widget in self.widgets:
+        for widget in self.all_active_widgets:
             widget.draw(Terminal)
     
     def _next_widget(self):
         """
         Move focus to the next widget
         """
-        if not self.widgets: 
+        
+        widgets = self.all_active_widgets
+        
+        if not widgets: 
             return
         
         # Checking for selectable widget
-        if not any(w.is_selectable for w in self.widgets):
+        if not any(w.is_selectable for w in widgets):
             if self.focus_index != -1:
-                self.widgets[self.focus_index].deselect()
+                widgets[self.focus_index].deselect()
             self.focus_index = -1
             return
         
         if self.focus_index != -1: 
-            self.widgets[self.focus_index].deselect()  # Deselect current widget
+            widgets[self.focus_index].deselect()  # Deselect current widget
         
         old_index = self.focus_index
         while True:
-            self.focus_index = (self.focus_index + 1) % len(self.widgets)
-            if self.widgets[self.focus_index].is_selectable:
+            self.focus_index = (self.focus_index + 1) % len(widgets)
+            if widgets[self.focus_index].is_selectable:
                 break
             if self.focus_index == old_index:  
                 return
         
-        self.widgets[self.focus_index].select()  # Select new widget
+        widgets[self.focus_index].select()  # Select new widget
 
     def _handle_input(self, key):
         """
@@ -193,3 +194,17 @@ class Engine:
                 self.main_thread_queue.task_done()
             except queue.Empty:
                 break
+    
+    @property
+    def all_active_widgets(self) -> list:
+        """Get all active widgets
+
+        Returns:
+            list: List of all active widgets
+        """
+        flat_list = []
+        for w in self.widgets:
+            flat_list.append(w)
+            if hasattr(w, 'children'):
+                flat_list.extend(w.children)
+        return flat_list
