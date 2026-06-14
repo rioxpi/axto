@@ -15,7 +15,7 @@
 		2. example: `box_widget.bind("key", lambda key: print(f"Box 2 received key: {key}"))`
 
 ## BOX
-1. `from axto.widgets.box import Box`
+1. `from axto.widgets import Box`
 2. parameters
 	1. default_color <- drawing color		(str)
 	2. selected_color <- color when focused	(str)
@@ -24,7 +24,7 @@
 
 ## BUTTON
 
-1. `from axto.widgets.button import Button`
+1. `from axto.widgets import Button`
 2. parameters
 	1. x <- number of columns
 	2. y <- number of rows
@@ -35,7 +35,7 @@
 
 ## INPUT
 
-1. `from axto.widgets.input import Input`
+1. `from axto.widgets import Input`
 2. parameters
 	1. placeholder <- text showed when nothing is in the box	(str)
 3. New event_type for bind - "submit", executed when ENTER is pressed
@@ -43,7 +43,7 @@
 
 ## LABEL
 
-1. `from axto.widgets.label import Label`
+1. `from axto.widgets import Label`
 2. parameters
 	1. text <- text in label		(str)
 	2. align <- left, center, right	(str)
@@ -56,15 +56,36 @@
 
 ## ScrollList
 
-1. `from axto.widgets.scroll_list import ScrollList`
+1. `from axto.widgets import ScrollList`
 2. parameters
 	1. items <- items to show in list	(list)
 
 ## ProgressBar
 
-1. `from axto.widgets.progress_bar import ProgressBar`
+1. `from axto.widgets import ProgressBar`
 2. parameters
 	1. placeholder <- text in progress bar
 3. Functions
 	1. `set_progress(value)`
 		1. value <- new progress (0.0-1.0)	(float)
+
+## Select
+
+1. `from axto.widgets import Select`
+2. parameters
+	1. options <- Available options to select	(list)
+	2. default_index <- default selected index 	(int)
+	3. label <- text showed before selector 	(str)
+3. New event_type for bind - "change", executed when user used arrows to change option
+	1. Returns value and index
+	2. example: `select_widget.bind("change", lambda val, idx: print(f"Selected: {val} with index {idx}")`
+
+## Container
+
+1. `from axto.widgets import Container`
+2. parameters
+	1. has_border <- Drawing border around widget	(bool)
+	2. title <- title showing on top of widget 		(str)
+3. Functions
+	1. `add_child(widget)`
+		1. Add widget to continer
