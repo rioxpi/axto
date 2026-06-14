@@ -34,3 +34,11 @@
 2. Add themes
 3. Fix bug with selecting first item
 4. Fix bug with resolve geometry in scenes
+
+## Version 0.1.4
+
+1. Add minimal window size
+2. Update API
+3. Add Check Box widget
+4. Add Select widget
+5. Add Container widget

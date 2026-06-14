@@ -26,8 +26,11 @@ app.run()
 2. INPUT
 3. BUTTON
 4. LABEL
-5. SCROLL LIST
+5. SCROLL LIST2
 6. PROGRESS BAR
+7. Check Box
+8. Select
+9. Container
 
 ## CONTROLS
 
@@ -36,4 +39,10 @@ app.run()
 
 ## DOCUMENTATION
 
-You can find the full documentation in the `docs/` directory.
+You can find the full documentation in the [`docs/`](https://github.com/rioxpi/axto/tree/main/docs) directory.
+
+## CREDITS
+
+Author: [rioxpi](https://github.com/rioxpi)
+
+Github page: [axto](https://github.com/rioxpi/axto)
