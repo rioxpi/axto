@@ -44,3 +44,4 @@ class SceneManager:
         
         Terminal.clear_screen()
         self.engine._render_all_widgets()
+        self.engine._next_widget()
