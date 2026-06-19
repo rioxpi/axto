@@ -8,6 +8,7 @@ from .parser import read_key
 from .keys import Key
 from .styles import Theme
 from .default_scenes import DefaultScenes
+from .widgets.pop_up import PopUp
 import queue
 
 class Engine:
@@ -29,6 +30,8 @@ class Engine:
         
         self._widget_data = []
         self._is_terminal_too_small = False 
+        
+        self._active_popup = ()
         
         if hasattr(signal, 'SIGWINCH'):
             signal.signal(signal.SIGWINCH, self._handle_sigwinch)
@@ -82,6 +85,9 @@ class Engine:
             while self.running:    
                                 
                 self._process_main_thread_queue()
+                
+                self._check_popup_timeout()
+                
                 # Draw all widgets 
                 self._render_all_widgets()
                 
@@ -101,8 +107,12 @@ class Engine:
         """
         Helper method to render all widgets
         """
+        Terminal.clear_screen()
         for widget in self.all_active_widgets:
             widget.draw(Terminal)
+            
+        if self._active_popup:
+            self._active_popup[0].draw(Terminal)
     
     def _next_widget(self):
         """
@@ -171,6 +181,11 @@ class Engine:
         
         for widget in self.widgets:
             widget.resolve_geometry(width, height)
+        
+        if self._active_popup:
+            self._active_popup[0].resolve_geometry(width, height)
+            
+        
         self._render_all_widgets()
     
     def dispatch_to_main_thread(self, func, *args, **kwargs):
@@ -194,6 +209,47 @@ class Engine:
                 self.main_thread_queue.task_done()
             except queue.Empty:
                 break
+
+    def add_popup(self, title: str, message: str, duration : float = 3.0) -> None:
+        """_summary_
+
+        Args:
+            title (str): _description_
+            message (str): _description_
+            duration (float, optional): _description_. Defaults to 3.0.
+        """
+        
+        expire_time = time.time() + duration
+        
+        widget = PopUp(0.4, 0.4, title, message)
+        
+        widget.engine = self
+        
+        w,h = Terminal.get_size()
+        widget.resolve_geometry(w,h)
+        
+        self._active_popup = (widget, expire_time)
+        
+        self._render_all_widgets()
+    
+    def _check_popup_timeout(self) -> None:
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
+        
+        if not self._active_popup: return
+        
+        expire_time = self._active_popup[1]
+        
+        now = time.time()
+        
+        if now >= expire_time:
+            self._active_popup = ()
+            self._render_all_widgets()
+            
+        
     
     @property
     def all_active_widgets(self) -> list:

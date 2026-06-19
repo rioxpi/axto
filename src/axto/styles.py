@@ -38,3 +38,5 @@ class Theme:
         
         self.list_item_selected = "1;" + Color.GREEN
         self.list_item_normal = Color.WHITE
+        
+        self.information_color = Color.RED

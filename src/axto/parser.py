@@ -41,20 +41,21 @@ if sys.platform == 'win32':
 # --- UNIX ---
 else:
     import select
-
     def read_key():
         fd = sys.stdin.fileno()
         
-        # Read a single byte from stdin
+        ready, _, _ = select.select([fd], [], [], 0.05)
+        if not ready:
+            return None
+            
         try:
             ch = os.read(fd, 1).decode('utf-8')
         except Exception:
             return ''
             
         if ch == '\033':
-            # Escape sequence: read the next two bytes to determine if it's an arrow key
-            ready, _, _ = select.select([fd], [], [], 0.02)
-            if ready:
+            ready_esc, _, _ = select.select([fd], [], [], 0.02)
+            if ready_esc:
                 ch2 = os.read(fd, 1).decode('utf-8')
                 if ch2 == '[':
                     ch3 = os.read(fd, 1).decode('utf-8')
@@ -65,7 +66,6 @@ else:
                         'D': Key.LEFT
                     }
                     return arrow_keys.get(ch3, Key.ESC)
-            # If we get here, it means we got an ESC key without a valid escape sequence
             return Key.ESC
 
         control_keys = {
