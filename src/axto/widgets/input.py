@@ -3,11 +3,12 @@ from axto.keys import Key
 import time
 
 class Input(Widget):
-    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str='', selectable:bool=True):
+    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str='', selectable:bool=True, allow_to_submit_on_exit : bool = False):
         super().__init__(x, y, width, height=1, selectable=selectable)
         self.placeholder = placeholder
         self.text = ''
         self.error_until = 0  
+        self.allow_to_submit_on_exit = allow_to_submit_on_exit
     
     def on_key(self, key):
         """Handle key press events for the input widget.
@@ -39,7 +40,7 @@ class Input(Widget):
         """
         content_width = self.width - 2
         
-        # Error efffect
+        # Error effect
         if time.time() < self.error_until:
             term.move_cursor(self.x, self.y)
             error_box = f"[{self.placeholder if not self.text else self.text}]".ljust(self.width)[:self.width]
@@ -83,3 +84,13 @@ class Input(Widget):
             term.move_cursor(actual_cursor_x, self.y)
             if hasattr(term, 'show_cursor'):
                 term.show_cursor()
+
+    def deselect(self) -> None:
+        """
+        Deselect the input widget and trigger the submit event if allowed.
+        """
+        self.selected = False
+        self.trigger("deselect")
+        if self.allow_to_submit_on_exit:
+            if self.text:
+                self.trigger("submit", self.text)

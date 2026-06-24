@@ -11,8 +11,13 @@ from axto.scene_manager import SceneManager
 def main():
     app = Engine()
 
-    app.add_popup("HELLO", "WELCOME IN MY WORLD")
-            
+    test = Input(5,5,50,'test', allow_to_submit_on_exit=True)
+    test.bind("submit", lambda text: print(f"submitted: {text}"))
+    
+    app.add_widget(test)
+    
+    app.add_widget(Button(10,10,'HELLO'))
+        
     app.run()
     
 

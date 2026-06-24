@@ -95,7 +95,7 @@ class Engine:
                 key = read_key()
                 self._handle_input(key)
                 
-                if self.widgets:
+                if self.widgets and key:
                     active_widget = self.all_active_widgets[self.focus_index]
                     active_widget.on_key(key)
         finally:
@@ -211,12 +211,12 @@ class Engine:
                 break
 
     def add_popup(self, title: str, message: str, duration : float = 3.0) -> None:
-        """_summary_
+        """ Create a popup widget and add it to the engine for a specified duration
 
         Args:
-            title (str): _description_
-            message (str): _description_
-            duration (float, optional): _description_. Defaults to 3.0.
+            title (str): Title of the popup
+            message (str): Message content of the popup
+            duration (float, optional): Duration for which the popup should be displayed. Defaults to 3.0.
         """
         
         expire_time = time.time() + duration
@@ -233,10 +233,8 @@ class Engine:
         self._render_all_widgets()
     
     def _check_popup_timeout(self) -> None:
-        """_summary_
-
-        Returns:
-            _type_: _description_
+        """ 
+        Check if the active popup has expired and remove it if necessary 
         """
         
         if not self._active_popup: return
