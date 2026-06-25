@@ -3,21 +3,22 @@ from axto.keys import Key
 import time
 
 class Input(Widget):
-    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str='', selectable:bool=True, allow_to_submit_on_exit : bool = False):
+    def __init__(self, x:int|float, y:int|float, width:int|float, placeholder:str='', selectable:bool=True, allow_to_submit_on_exit : bool = False, default_text : str = "", allow_blank_string : bool = False):
         super().__init__(x, y, width, height=1, selectable=selectable)
         self.placeholder = placeholder
-        self.text = ''
+        self.text = default_text
         self.error_until = 0  
         self.allow_to_submit_on_exit = allow_to_submit_on_exit
-    
-    def on_key(self, key):
+        self.allow_blank_string = allow_blank_string
+     
+    def on_key(self, key : str | Key):
         """Handle key press events for the input widget.
 
         Args:
             key (Key): The key that was pressed. Can be a string or a Key enum.
         """
         if key == Key.ENTER:
-            if not self.text: # Submit is not allowed if text is empty
+            if not self.text and not self.allow_blank_string: # Submit is not allowed if text is empty
                 self.trigger_error_flash()
             else:
                 self.trigger('submit', self.text)
