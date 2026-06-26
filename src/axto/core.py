@@ -9,6 +9,7 @@ from .keys import Key
 from .styles import Theme
 from .default_scenes import DefaultScenes
 from .widgets.pop_up import PopUp
+from .widgets.tab import Tab, TabScene
 import queue
 
 class Engine:
@@ -27,11 +28,12 @@ class Engine:
         self.default_scenes = DefaultScenes(self)
         
         self.main_thread_queue = queue.Queue()
-        
         self._widget_data = []
         self._is_terminal_too_small = False 
         
         self._active_popup = ()
+        
+        self.tab_manager = Tab(self)
         
         if hasattr(signal, 'SIGWINCH'):
             signal.signal(signal.SIGWINCH, self._handle_sigwinch)
@@ -98,6 +100,7 @@ class Engine:
                 if self.widgets and key:
                     active_widget = self.all_active_widgets[self.focus_index]
                     active_widget.on_key(key)
+                    self.tab_manager.on_key(key)
         finally:
             # Restore terminal settings and clear screen on exit
             self._disable_raw_mode()
@@ -108,12 +111,25 @@ class Engine:
         Helper method to render all widgets
         """
         Terminal.clear_screen()
+        
         for widget in self.all_active_widgets:
             widget.draw(Terminal)
             
         if self._active_popup:
             self._active_popup[0].draw(Terminal)
+        
+        self.tab_manager.draw(Terminal)
     
+    def add_tab(self, title : str, children : TabScene, key : Key | str) -> None:
+        """Add a new tab to the tab manager
+
+        Args:
+            title (str): Title of the tab
+            children (TabScene): The scene to display when the tab is selected
+            key (Key | str): The key combination to switch to this tab
+        """
+        self.tab_manager.add_tab(title, children, key)
+        
     def _next_widget(self):
         """
         Move focus to the next widget
@@ -246,8 +262,6 @@ class Engine:
         if now >= expire_time:
             self._active_popup = ()
             self._render_all_widgets()
-            
-        
     
     @property
     def all_active_widgets(self) -> list:
