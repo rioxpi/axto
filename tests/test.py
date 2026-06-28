@@ -20,6 +20,10 @@ def main():
     tab1.add_widget(Label(10,10,"SCENE 1"))
     tab2.add_widget(Button(10,10,'SCENE 2'))
     
+    st = StatusBar({"1" : "tab 1", "2" : "tab 2", "ESC" : "exit"})
+    
+    tab1.add_widget(st)
+    tab2.add_widget(st)
     
     app.add_tab('test 1', tab1, '1')
     app.add_tab('test 2', tab2, '2')

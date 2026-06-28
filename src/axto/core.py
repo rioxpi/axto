@@ -11,12 +11,17 @@ from .default_scenes import DefaultScenes
 from .widgets.pop_up import PopUp
 from .widgets.tab import Tab, TabScene
 import queue
+import sys
 
 class Engine:
     """
     Core engine that runs the application, manages the main loop, and handles input and rendering
     """
     def __init__(self):
+        if sys.platform == "win32":
+            print("ERROR: Windows is currently not supported. Please use a Unix-like terminal.")
+            sys.exit(1)
+        
         self.running = False
         self.widgets = []
         self._old_settings = None

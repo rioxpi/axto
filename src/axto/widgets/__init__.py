@@ -7,6 +7,7 @@ from .progress_bar import ProgressBar
 from .check_box import CheckBox
 from .select import Select
 from .container import Container
+from .status_bar import StatusBar
 
 __all__ = [
     "Box",
@@ -18,4 +19,5 @@ __all__ = [
     "CheckBox",
     "Select",
     "Container",
+    "StatusBar"
 ]
