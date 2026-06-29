@@ -42,3 +42,12 @@
 3. Add Check Box widget
 4. Add Select widget
 5. Add Container widget
+
+## Version 1.0.0
+
+1. Add Status bar widget
+2. Add Tabs
+3. Add default input text and allow blank string
+4. Add submit input on deselect
+5. Add popups
+6. Fix selecting first widget during scene change

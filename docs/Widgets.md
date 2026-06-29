@@ -1,91 +1,121 @@
-# WIDGETS
+# Widgets
 
-## MAIN WIDGET
+All UI components inherit from the main `Widget` base class.
 
-1. The base class for all UI components. All widgets inherit these parameters and functions.
-2. Parameters
-	1. x <- number of columns			(int | float) `int` for absolute columns, `float` for percentage of screen width
-	2. y <- number of rows				(int | float) `int` for absolute columns, `float` for percentage of screen height
-	3. width <- width in columns		(int | float) `int` for absolute columns, `float` for percentage of screen width
-	4. height <- height in rows			(int | float) `int` for absolute columns, `float` for percentage of screen height
-	5. selectable <- can be selected	(bool)
-3. Functions
-	1. `bind(event_type, callback)`
-		1. available: "key" (pressing any key), "select", "deselect"
-		2. example: `box_widget.bind("key", lambda key: print(f"Box 2 received key: {key}"))`
+## Base Widget Properties & Methods
 
-## BOX
-1. `from axto.widgets import Box`
-2. parameters
-	1. default_color <- drawing color		(str)
-	2. selected_color <- color when focused	(str)
-	3. border_style <- style of box's border ("single", "double", "rounded", "bold", "none")
-	4. bg_color <- background color			(str)
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `x` | `int` | `float` | X-axis coordinate. Use `int` for absolute columns or `float` for screen percentage. |
+| `y` | `int` | `float` | Y-axis coordinate. Use `int` for absolute rows or `float` for screen percentage. |
+| `width` | `int` | `float` | Component width. Use `int` for absolute columns or `float` for screen percentage. |
+| `height` | `int` | `float` | Component height. Use `int` for absolute rows or `float` for screen percentage. |
+| `selectable` | `bool` | Determines if the widget can receive focus. |
 
-## BUTTON
+**Base Methods:**
 
-1. `from axto.widgets import Button`
-2. parameters
-	1. x <- number of columns
-	2. y <- number of rows
-	3. text <- text showed in button
-	4. selectable <- can be selected
-3. New event_type for bind - "press", executed when button is pressed
-	1. Example: `button_widget.bind("press", lambda press: print(f"Button has been pressed"))`
+* `bind(event_type, callback)`: Attaches a callback function to specific widget events. Available global events include `"key"`, `"select"`, and `"deselect"`.
 
-## INPUT
+### Available Components
 
-1. `from axto.widgets import Input`
-2. parameters
-	1. placeholder <- text showed when nothing is in the box	(str)
-3. New event_type for bind - "submit", executed when ENTER is pressed
-	1. example: `input_widget.bind("submit", lambda text: print(f"Input submitted: {text}")`
+Below is the list of available widgets and their unique parameters or events.
 
-## LABEL
+### Box
 
-1. `from axto.widgets import Label`
-2. parameters
-	1. text <- text in label		(str)
-	2. align <- left, center, right	(str)
-	3. color <- text color			(str)
-3. Functions
-	1. `set_text(text, resize=True)`
-		1. text <- the new string to display 
-		2. resize <- changing width, useful when preset width
-		3. example: `label_widget.set_text("Hello World!", resize=False)`
+*Import:* `from axto.widgets import Box`
 
-## ScrollList
+* **`default_color`** (`str`): Standard drawing color.
+* **`selected_color`** (`str`): Color applied when focused.
+* **`border_style`** (`str`): Options include `"single"`, `"double"`, `"rounded"`, `"bold"`, or `"none"`.
+* **`bg_color`** (`str`): Background color of the box.
 
-1. `from axto.widgets import ScrollList`
-2. parameters
-	1. items <- items to show in list	(list)
+### Button
 
-## ProgressBar
+*Import:* `from axto.widgets import Button`
 
-1. `from axto.widgets import ProgressBar`
-2. parameters
-	1. placeholder <- text in progress bar
-3. Functions
-	1. `set_progress(value)`
-		1. value <- new progress (0.0-1.0)	(float)
+* **`text`** (`str`): Text displayed on the button.
+* **Event `press`**: Triggered when the button is actively pressed.
 
-## Select
+### Input
 
-1. `from axto.widgets import Select`
-2. parameters
-	1. options <- Available options to select	(list)
-	2. default_index <- default selected index 	(int)
-	3. label <- text showed before selector 	(str)
-3. New event_type for bind - "change", executed when user used arrows to change option
-	1. Returns value and index
-	2. example: `select_widget.bind("change", lambda val, idx: print(f"Selected: {val} with index {idx}")`
+*Import:* `from axto.widgets import Input`
+ 
+* **`placeholder`** (`str`): Text shown when the input box is empty.
+* **`allow_to_submit_on_exit`** (`bool`): Submits current text upon losing focus.
+* **`default_text`** (`str`): Pre-filled text within the input.
+* **`allow_blank_string`** (`bool`): Permits submitting empty strings.
+* **Event `submit`**: Triggered when the ENTER key is pressed.
 
-## Container
+### Label
 
-1. `from axto.widgets import Container`
-2. parameters
-	1. has_border <- Drawing border around widget	(bool)
-	2. title <- title showing on top of widget 		(str)
-3. Functions
-	1. `add_child(widget)`
-		1. Add widget to continer
+*Import:* `from axto.widgets import Label`
+
+* **`text`** (`str`): The string to display.
+* **`align`** (`str`): Text alignment option (`"left"`, `"center"`, `"right"`).
+* **`color`** (`str`): Text color.
+* **Method `set_text(text, resize=True)`**: Updates the displayed text and dynamically adjusts widget width if `resize` is true.
+
+### ScrollList
+
+*Import:* `from axto.widgets import ScrollList`
+
+* **`items`** (`list`): A list of items to display in the scrollable view.
+
+### ProgressBar
+
+*Import:* `from axto.widgets import ProgressBar`
+
+* **`placeholder`** (`str`): Text displayed inside the progress bar.
+* **Method `set_progress(value)`**: Updates the completion state using a float value between 0.0 and 1.0.
+
+### Select
+
+*Import:* `from axto.widgets import Select`
+
+* **`options`** (`list`): List of available options.
+* **`default_index`** (`int`): Initially selected item index.
+* **`label`** (`str`): Text displayed preceding the selector.
+* **Event `change`**: Triggered upon arrow key navigation; passes both value and index.
+
+### Container
+
+*Import:* `from axto.widgets import Container`
+
+* **`has_border`** (`bool`): Determines if a border is drawn around the container.
+* **`title`** (`str`): Top-aligned title text.
+* **Method `add_child(widget)`**: Nests a widget within the container.
+
+### StatusBar
+
+*Import:* `from axto.widgets import StatusBar`
+
+* **`shortcuts`** (`dict[str, str]`): A dictionary mapping shortcut keys to descriptions.
+
+---
+
+## Styling and Themes
+
+Colors and theme properties are managed via `from axto.styles import Color`.
+
+### Available Colors and Modifiers
+
+| Category | Options |
+| --- | --- |
+| Standard Colors | `BLACK`, `RED`, `GREEN`, `YELLOW`, `BLUE`, `MAGENTA`, `CYAN`, `WHITE`. |
+| Bright Colors | `BRIGHT_BLACK`, `BRIGHT_RED`, `BRIGHT_GREEN`, `BRIGHT_YELLOW`, `BRIGHT_BLUE`, `BRIGHT_MAGENTA`, `BRIGHT_CYAN`, `BRIGHT_WHITE`. |
+| Text Modifiers | `BOLD`, `DIM`, `UNDERLINE`. |
+
+### Theme Set Variables
+
+Customize the framework's visual behavior by modifying these predefined theme attributes:
+
+* **`default_text`**: Used for standard text rendering.
+* **`border_normal`**: Default border color for boxes.
+* **`border_focus`**: Border color when a box is actively selected.
+* **`widget_selected`**: Applied when an interactive widget is focused.
+* **`widget_deselected`**: Applied when an interactive widget is in a normal state.
+* **`placeholder`**: Color for input placeholder text.
+* **`progress_fill`**: Color applied to the incomplete portion of a progress bar.
+* **`progress_complete`**: Color applied to the completed portion of a progress bar.
+* **`list_item_selected`**: Highlight color for the focused item in a ScrollList.
+* **`list_item_normal`**: Default color for unfocused items in a ScrollList.
