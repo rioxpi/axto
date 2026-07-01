@@ -2,9 +2,13 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
+[project.urls]
+Homepage = "https://github.com/rioxpi/axto"
+Issues = "https://github.com/rioxpi/axto/issues"
+
 [project]
 name = "axto"
-version = "0.1.5"
+version = "0.1.6"
 description = "Simple TUI library."
 readme = "README.md"
 requires-python = ">=3.7"
