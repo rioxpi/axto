@@ -90,22 +90,28 @@ class Engine:
             self._handle_resize()  # Initial render based on current terminal size
             
             while self.running:    
-                                
-                self._process_main_thread_queue()
+                need_render = False
+                if self._process_main_thread_queue():
+                    need_render = True
                 
-                self._check_popup_timeout()
-                
-                # Draw all widgets 
-                self._render_all_widgets()
+                if self._check_popup_timeout():
+                    need_render = True
                 
                 # Handle input
                 key = read_key()
+
                 self._handle_input(key)
                 
                 if self.widgets and key:
                     active_widget = self.all_active_widgets[self.focus_index]
                     active_widget.on_key(key)
-                    self.tab_manager.on_key(key)
+                    need_render = True
+                
+                if not key:
+                    time.sleep(0.01)
+                
+                if need_render:
+                    self._render_all_widgets()
         finally:
             # Restore terminal settings and clear screen on exit
             self._disable_raw_mode()
@@ -218,18 +224,20 @@ class Engine:
         """
         self.main_thread_queue.put((func, args, kwargs))
     
-    def _process_main_thread_queue(self):
+    def _process_main_thread_queue(self) -> bool:
         """
         Processing functions from main_thread_queue
         """ 
-        
+        processed = False
         while not self.main_thread_queue.empty():
             try:
                 func, args, kwargs = self.main_thread_queue.get_nowait()
                 func(*args, **kwargs)
                 self.main_thread_queue.task_done()
+                processed = True
             except queue.Empty:
                 break
+        return processed
 
     def add_popup(self, title: str, message: str, duration : float = 3.0) -> None:
         """ Create a popup widget and add it to the engine for a specified duration
@@ -253,12 +261,12 @@ class Engine:
         
         self._render_all_widgets()
     
-    def _check_popup_timeout(self) -> None:
+    def _check_popup_timeout(self) -> bool:
         """ 
         Check if the active popup has expired and remove it if necessary 
         """
         
-        if not self._active_popup: return
+        if not self._active_popup: return False
         
         expire_time = self._active_popup[1]
         
@@ -267,6 +275,9 @@ class Engine:
         if now >= expire_time:
             self._active_popup = ()
             self._render_all_widgets()
+            return True
+        
+        return False
     
     @property
     def all_active_widgets(self) -> list:

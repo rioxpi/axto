@@ -43,7 +43,7 @@
 4. Add Select widget
 5. Add Container widget
 
-## Version 1.0.0
+## Version 0.1.5
 
 1. Add Status bar widget
 2. Add Tabs
